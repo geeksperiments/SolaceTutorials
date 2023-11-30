@@ -1,4 +1,5 @@
 ﻿using SolaceSystems.Solclient.Messaging;
+using System.Security.Cryptography;
 
 
 namespace TopicPublisher
@@ -89,12 +90,19 @@ namespace TopicPublisher
                 if (returnCode == ReturnCode.SOLCLIENT_OK)
                 {
                     Console.WriteLine("Session successfully connected.");
+                    PublishMessage(session);
                 }
                 else
                 {
                     Console.WriteLine("Error connecting, return code: {0}", returnCode);
                 }
             }
+        }
+
+        private void PublishMessage(ISession session)
+        {
+            ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
+            Console.WriteLine("Topic object created...");
         }
     }
 }
