@@ -77,6 +77,7 @@ namespace TopicSubscriber
                 AuthenticationScheme = AuthenticationSchemes.BASIC,
                 UserName = UserName,
                 Password = Password,
+                ClientName = "my-subscriber-connection"
             };
 
             // Connect to the Solace messaging router
