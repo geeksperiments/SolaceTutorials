@@ -99,10 +99,15 @@ namespace TopicPublisher
             }
         }
 
+
         private void PublishMessage(ISession session)
         {
-            ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
-            Console.WriteLine("Topic object created...");
+            // Create the message
+            using (IMessage message = ContextFactory.Instance.CreateMessage())
+            {
+                ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
+
+            }
         }
     }
 }
