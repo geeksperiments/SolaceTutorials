@@ -109,6 +109,7 @@ namespace QueueProducer
                 ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
                 message.Destination = topic;
                 message.DeliveryMode = MessageDeliveryMode.Persistent;
+                message.BinaryAttachment = Encoding.ASCII.GetBytes("Sample Message");
             }
         }
 
