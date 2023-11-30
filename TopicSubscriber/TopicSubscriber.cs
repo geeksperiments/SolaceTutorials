@@ -95,6 +95,12 @@ namespace TopicSubscriber
                 if (returnCode == ReturnCode.SOLCLIENT_OK)
                 {
                     Console.WriteLine("Session successfully connected.");
+                    // This is the topic on Solace messaging router where a message is published
+                    // Must subscribe to it to receive messages
+                    ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
+                    session.Subscribe(topic, true);
+
+                    Console.WriteLine("Waiting for a message to be published...");
                     WaitEventWaitHandle.WaitOne();
                 }
                 else
