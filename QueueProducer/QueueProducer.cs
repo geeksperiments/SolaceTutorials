@@ -107,7 +107,8 @@ namespace QueueProducer
             using (IMessage message = ContextFactory.Instance.CreateMessage())
             {
                 ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
-
+                message.Destination = topic;
+                message.DeliveryMode = MessageDeliveryMode.Persistent;
             }
         }
 
