@@ -26,9 +26,27 @@ namespace TopicSubscriber
 
             ContextFactoryProperties cfp = new ContextFactoryProperties();
             ContextFactory.Instance.Init(cfp);
-            ContextFactory.Instance.Cleanup();
+            try
+            {
+                using (IContext context = ContextFactory.Instance.CreateContext(new ContextProperties(), null))
+                {
+                    Console.WriteLine("Context Created");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception thrown: {0}", ex.Message);
+            }
+            finally
+            {
+                // Dispose Solace Systems Messaging API
+                ContextFactory.Instance.Cleanup();
+            }
             Console.WriteLine("Finished.");
         }
     }
 
 }
+
+
