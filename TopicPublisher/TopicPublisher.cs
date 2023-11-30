@@ -1,5 +1,6 @@
 ﻿using SolaceSystems.Solclient.Messaging;
 using System.Security.Cryptography;
+using System.Text;
 
 
 namespace TopicPublisher
@@ -106,6 +107,7 @@ namespace TopicPublisher
             {
                 ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
                 message.Destination = topic;
+                message.BinaryAttachment = Encoding.ASCII.GetBytes("Sample Message");
             }
         }
 
