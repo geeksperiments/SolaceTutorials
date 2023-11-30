@@ -92,6 +92,7 @@ namespace QueueProducer
                 if (returnCode == ReturnCode.SOLCLIENT_OK)
                 {
                     Console.WriteLine("Session successfully connected.");
+                    PublishMessage(session);
                 }
                 else
                 {
@@ -99,5 +100,12 @@ namespace QueueProducer
                 }
             }
         }
+
+        private void PublishMessage(ISession session)
+        {
+            ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
+            Console.WriteLine("Topic object created...");
+        }
+
     }
 }
