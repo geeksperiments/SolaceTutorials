@@ -100,6 +100,7 @@ namespace TopicPublisher
             }
         }
 
+
         private void PublishMessage(ISession session)
         {
             // Create the message
@@ -108,6 +109,18 @@ namespace TopicPublisher
                 ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
                 message.Destination = topic;
                 message.BinaryAttachment = Encoding.ASCII.GetBytes("Sample Message");
+
+                // Publish the message to the topic on the Solace messaging router
+                Console.WriteLine("Publishing message...");
+                ReturnCode returnCode = session.Send(message);
+                if (returnCode == ReturnCode.SOLCLIENT_OK)
+                {
+                    Console.WriteLine("Done.");
+                }
+                else
+                {
+                    Console.WriteLine("Publishing failed, return code: {0}", returnCode);
+                }
             }
         }
 
