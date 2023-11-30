@@ -110,6 +110,18 @@ namespace QueueProducer
                 message.Destination = topic;
                 message.DeliveryMode = MessageDeliveryMode.Persistent;
                 message.BinaryAttachment = Encoding.ASCII.GetBytes("Sample Message");
+
+                // Publish the message to the topic on the Solace messaging router
+                Console.WriteLine("Publishing message...");
+                ReturnCode returnCode = session.Send(message);
+                if (returnCode == ReturnCode.SOLCLIENT_OK)
+                {
+                    Console.WriteLine("Done.");
+                }
+                else
+                {
+                    Console.WriteLine("Publishing failed, return code: {0}", returnCode);
+                }
             }
         }
 
