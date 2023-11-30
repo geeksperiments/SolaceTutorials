@@ -81,7 +81,9 @@ namespace TopicSubscriber
                 ConnectTimeoutInMsecs = 5000,
                 ConnectRetries = 2,
                 ReconnectRetriesWaitInMsecs = 100,
-                CompressionLevel = 5
+                CompressionLevel = 5,
+                KeepAliveIntervalInMsecs = 0,
+                KeepAliveIntervalsLimit = 3
             };
 
             // Connect to the Solace messaging router
