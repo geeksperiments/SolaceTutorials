@@ -1,4 +1,6 @@
 ﻿using SolaceSystems.Solclient.Messaging;
+using System.Text;
+using System;
 using System.Threading;
 
 namespace TopicSubscriber
@@ -89,7 +91,7 @@ namespace TopicSubscriber
             // Connect to the Solace messaging router
             Console.WriteLine("Connecting as {0}@{1} on {2}...", UserName, VPNName, host);
             // NOTICE HandleMessage as the message event handler
-            using (ISession session = context.CreateSession(sessionProps, null, null))
+            using (ISession session = context.CreateSession(sessionProps, HandleMessage, null))
             {
                 ReturnCode returnCode = session.Connect();
                 if (returnCode == ReturnCode.SOLCLIENT_OK)
@@ -110,8 +112,23 @@ namespace TopicSubscriber
             }
         }
 
+        private void HandleMessage(object source, MessageEventArgs args)
+        {
+            Console.WriteLine("Received published message.");
+            // Received a message
+            using (IMessage message = args.Message)
+            {
+                // Expecting the message content as a binary attachment
+                Console.WriteLine("Message content: {0}", Encoding.ASCII.GetString(message.BinaryAttachment));
+                // finish the program
+                WaitEventWaitHandle.Set();
+            }
+        }
     }
 
 }
 
+
+
+						
 
