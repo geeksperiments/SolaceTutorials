@@ -29,6 +29,9 @@ namespace TopicSubscriber
             string password = args[2];
 
             ContextFactoryProperties cfp = new ContextFactoryProperties();
+            cfp.SolClientLogLevel = SolLogLevel.Notice;
+            cfp.LogToConsoleError();
+
             ContextFactory.Instance.Init(cfp);
             try
             {
