@@ -79,7 +79,8 @@ namespace TopicSubscriber
                 Password = Password,
                 ClientName = "my-subscriber-connection",
                 ConnectTimeoutInMsecs = 5000,
-                ConnectRetries = 2
+                ConnectRetries = 2,
+                ReconnectRetriesWaitInMsecs = 100
             };
 
             // Connect to the Solace messaging router
