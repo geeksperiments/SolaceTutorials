@@ -92,6 +92,7 @@ namespace QueueConsumer
                 if (returnCode == ReturnCode.SOLCLIENT_OK)
                 {
                     Console.WriteLine("Session successfully connected.");
+                    ReceiveMessage(session);
                 }
                 else
                 {
@@ -99,5 +100,25 @@ namespace QueueConsumer
                 }
             }
         }
+
+        private void ReceiveMessage(ISession session)
+        {
+            EndpointProperties endpointProps = new EndpointProperties();
+            // Set permissions to allow all permissions to others.
+            endpointProps.Permission = EndpointProperties.EndpointPermission.Delete;
+            // Set access type to exclusive.
+            endpointProps.AccessType = EndpointProperties.EndpointAccessType.Exclusive;
+            // Set quota to 100 MB.
+            endpointProps.Quota = 100;
+            var queueName = "dev_queue";
+            IQueue queue = ContextFactory.Instance.CreateQueue(queueName);
+            Console.WriteLine(String.Format("About to provision queue '{0}' on the appliance", queueName));
+            session.Provision(queue /* endpoint */,
+                endpointProps /*endpoint properties */,
+                ProvisionFlag.WaitForConfirm | ProvisionFlag.IgnoreErrorIfEndpointAlreadyExists /* block waiting for confirmation */,
+                null /*no correlation key*/);
+            Console.WriteLine(string.Format("Queue '{0}' successfully provisioned on the appliance", "dev_queue"));
+        }
+
     }
 }
