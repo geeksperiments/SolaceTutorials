@@ -1,9 +1,12 @@
 ﻿using SolaceSystems.Solclient.Messaging;
+using System.Threading;
 
 namespace TopicSubscriber
 {
     internal class TopicSubscriber
     {
+        private EventWaitHandle WaitEventWaitHandle = new AutoResetEvent(false);
+
         string VPNName { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
@@ -85,6 +88,7 @@ namespace TopicSubscriber
                 if (returnCode == ReturnCode.SOLCLIENT_OK)
                 {
                     Console.WriteLine("Session successfully connected.");
+                    WaitEventWaitHandle.WaitOne();
                 }
                 else
                 {
