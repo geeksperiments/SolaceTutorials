@@ -2,13 +2,17 @@
 using System;
 using System.Text;
 using SolaceSystems.Solclient.Messaging;
+using static SolaceSystems.Solclient.Messaging.SessionProperties;
 
 
 namespace QueueConsumer
 {
     class QueueConsumer
     {
+
+        public static int msgCount = 0;
         private EventWaitHandle WaitEventWaitHandle = new AutoResetEvent(false);
+        private IFlow flow = null;
         string VPNName { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
@@ -123,8 +127,41 @@ namespace QueueConsumer
             ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
             session.Subscribe(queue, topic, SubscribeFlag.WaitForConfirm, null);
 
+            FlowProperties flowProps = new FlowProperties();
+            flowProps.AckMode = MessageAckMode.ClientAck;
+            flow = session.CreateFlow(flowProps, queue, null, HandleMessageEvent, HandleFlowEvent);
+
             Console.WriteLine("Waiting for a message to be published...");
             WaitEventWaitHandle.WaitOne();
+        }
+
+
+        public void HandleMessageEvent(Object source, MessageEventArgs args)
+        {
+            Console.WriteLine("Received published message.");
+            // Received a message
+            using (IMessage message = args.Message)
+            {
+                msgCount++;
+                // Expecting the message content as a binary attachment
+                Console.WriteLine("Message content: {0}", Encoding.ASCII.GetString(message.BinaryAttachment));
+
+                // When AckMode is set to ClientAck, guaranteed delivery messages are acknowledged after
+                // processing
+                flow.Ack(message.ADMessageId);
+
+                // finish the program
+                WaitEventWaitHandle.Set();
+            }
+        }
+
+        public void HandleFlowEvent(object sender, FlowEventArgs args)
+        {
+            // Received a flow event
+            Console.WriteLine("Received Flow Event '{0}' Type: '{1}' Text: '{2}'",
+                args.Event,
+                args.ResponseCode.ToString(),
+                args.Info);
         }
 
     }
