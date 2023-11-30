@@ -99,15 +99,15 @@ namespace TopicPublisher
             }
         }
 
-
         private void PublishMessage(ISession session)
         {
             // Create the message
             using (IMessage message = ContextFactory.Instance.CreateMessage())
             {
                 ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
-
+                message.Destination = topic;
             }
         }
+
     }
 }
