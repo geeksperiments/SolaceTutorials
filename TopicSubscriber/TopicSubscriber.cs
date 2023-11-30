@@ -68,8 +68,9 @@ namespace TopicSubscriber
             {
                 Host = host,
                 VPNName = VPNName,
+                AuthenticationScheme = AuthenticationSchemes.BASIC,
                 UserName = UserName,
-                Password = Password
+                Password = Password,
             };
 
             // Connect to the Solace messaging router
