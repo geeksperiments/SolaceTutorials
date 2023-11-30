@@ -8,6 +8,7 @@ namespace QueueConsumer
 {
     class QueueConsumer
     {
+        private EventWaitHandle WaitEventWaitHandle = new AutoResetEvent(false);
         string VPNName { get; set; }
         string UserName { get; set; }
         string Password { get; set; }
@@ -117,7 +118,13 @@ namespace QueueConsumer
                 endpointProps /*endpoint properties */,
                 ProvisionFlag.WaitForConfirm | ProvisionFlag.IgnoreErrorIfEndpointAlreadyExists /* block waiting for confirmation */,
                 null /*no correlation key*/);
-            Console.WriteLine(string.Format("Queue '{0}' successfully provisioned on the appliance", "dev_queue"));
+            Console.WriteLine(string.Format("Queue '{0}' successfully provisioned on the appliance", queueName));
+
+            ITopic topic = ContextFactory.Instance.CreateTopic("acme/test");
+            session.Subscribe(queue, topic, SubscribeFlag.WaitForConfirm, null);
+
+            Console.WriteLine("Waiting for a message to be published...");
+            WaitEventWaitHandle.WaitOne();
         }
 
     }
